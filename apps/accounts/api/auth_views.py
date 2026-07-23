@@ -16,27 +16,27 @@ from ..serializers import (
 )
 
 
-@extend_schema(tags=["Auth"], request=SendOTPSerializer, responses=MessageSerializer, summary="Send OTP")
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def send_otp(request):
-    serializer = SendOTPSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    services.request_otp(serializer.validated_data["phone"].strip())
-    return Response({"message": "OTP muvaffaqiyatli yuborildi."})
+# @extend_schema(tags=["Auth"], request=SendOTPSerializer, responses=MessageSerializer, summary="Send OTP")
+# @api_view(["POST"])
+# @permission_classes([AllowAny])
+# def send_otp(request):
+#     serializer = SendOTPSerializer(data=request.data)
+#     serializer.is_valid(raise_exception=True)
+#     services.request_otp(serializer.validated_data["phone"].strip())
+#     return Response({"message": "OTP muvaffaqiyatli yuborildi."})
 
 
-@extend_schema(tags=["Auth"], request=VerifyOTPSerializer, responses=AuthTokenSerializer, summary="Verify OTP & login")
-@api_view(["POST"])
-@permission_classes([AllowAny])
-def verify_otp(request):
-    serializer = VerifyOTPSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    result = services.verify_otp_and_login(
-        serializer.validated_data["phone"].strip(),
-        serializer.validated_data["code"].strip(),
-    )
-    return Response(result, status=status.HTTP_200_OK)
+# @extend_schema(tags=["Auth"], request=VerifyOTPSerializer, responses=AuthTokenSerializer, summary="Verify OTP & login")
+# @api_view(["POST"])
+# @permission_classes([AllowAny])
+# def verify_otp(request):
+#     serializer = VerifyOTPSerializer(data=request.data)
+#     serializer.is_valid(raise_exception=True)
+#     result = services.verify_otp_and_login(
+#         serializer.validated_data["phone"].strip(),
+#         serializer.validated_data["code"].strip(),
+#     )
+#     return Response(result, status=status.HTTP_200_OK)
 
 
 @extend_schema(tags=["Auth"], request=LogoutSerializer, responses=MessageSerializer, summary="Logout")

@@ -36,3 +36,7 @@ class AISearchRequestSerializer(serializers.Serializer):
 class AISearchResponseSerializer(serializers.Serializer):
     ai = serializers.DictField()
     results = LocationResultSerializer(many=True)
+
+
+
+# class SearchResultSerializer(serializers.Serializer):

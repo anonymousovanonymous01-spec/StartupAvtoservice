@@ -23,6 +23,14 @@ def get_workshop(workshop_id) -> Workshop:
     return active_workshops().get(id=workshop_id)
 
 
+def get_workshop_for_owner(owner) -> Workshop:
+    """Get the authenticated workshop owner's workshop.
+    
+    Raises Workshop.DoesNotExist if no workshop exists for the owner.
+    """
+    return active_workshops().filter(owner=owner).first()
+
+
 def locations_for_workshop(workshop_id) -> QuerySet[WorkshopLocation]:
     return WorkshopLocation.objects.filter(workshop_id=workshop_id).prefetch_related(
         "working_hours", "images"

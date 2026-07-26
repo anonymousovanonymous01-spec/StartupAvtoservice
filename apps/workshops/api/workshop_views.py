@@ -17,6 +17,40 @@ def _get_owned_workshop(request, pk) -> Workshop:
     return workshop
 
 
+@extend_schema(
+    tags=["Workshops"],
+    responses=WorkshopReadSerializer,
+    summary="Get authenticated owner's workshop",
+    description="Returns the workshop owned by the authenticated workshop owner. "
+    "Requires WORKSHOP_OWNER role. Returns 404 if no workshop exists.",
+)
+@api_view(["GET"])
+@permission_classes([IsWorkshopOwner])
+def workshop_me(request):
+    """Retrieve the authenticated workshop owner's workshop.
+    
+    - Requires JWT authentication and WORKSHOP_OWNER role
+    - Returns the workshop details for the authenticated owner
+    - Returns 404 if owner has no workshop
+    
+    Query Parameters:
+    None
+    
+    Response:
+    - 200: Returns WorkshopReadSerializer data
+    - 401: User not authenticated
+    - 403: User does not have WORKSHOP_OWNER role
+    - 404: Authenticated owner has no workshop
+    """
+    from apps.common.exceptions import NotFoundError
+    
+    workshop = selectors.get_workshop_for_owner(request.user)
+    if workshop is None:
+        raise NotFoundError(detail="You do not have a workshop yet.")
+    return Response(WorkshopReadSerializer(workshop).data)
+
+
+
 @extend_schema(tags=["Workshops"], responses=WorkshopReadSerializer(many=True), summary="List workshops")
 @api_view(["GET"])
 @permission_classes([AllowAny])

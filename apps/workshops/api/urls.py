@@ -5,6 +5,7 @@ from . import location_views, workshop_views
 urlpatterns = [
     # Workshops
     path("", workshop_views.workshop_list, name="workshop-list"),
+    path("me/", workshop_views.workshop_me, name="workshop-me"),
     path("create/", workshop_views.workshop_create, name="workshop-create"),
     path("<uuid:pk>/", workshop_views.workshop_detail, name="workshop-detail"),
     path("<uuid:pk>/update/", workshop_views.workshop_update, name="workshop-update"),

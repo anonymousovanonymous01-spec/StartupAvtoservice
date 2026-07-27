@@ -7,7 +7,7 @@ from rest_framework.response import Response
 
 from .. import services
 from ..models import Review
-from ..serializers import ReviewCreateSerializer, ReviewSerializer
+from ..serializers import ReviewCreateSerializer, ReviewSerializer, ReviewUpdateSerializer
 
 
 @extend_schema(tags=["Reviews"], responses=ReviewSerializer(many=True), summary="List reviews for a location")
@@ -43,3 +43,35 @@ def delete_review(request, review_id):
         return Response({"error": "Not allowed"}, status=status.HTTP_403_FORBIDDEN)
     services.delete_review(review=review)
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@extend_schema(
+    tags=["Reviews"],
+    request=ReviewUpdateSerializer,
+    responses=ReviewSerializer,
+    summary="Update own review",
+)
+@api_view(["PATCH"])
+@permission_classes([IsAuthenticated])
+def update_review(request, review_id):
+    review = Review.objects.get(id=review_id)
+
+    if review.user_id != request.user.id and not request.user.is_superuser:
+        return Response(
+            {"error": "Not allowed"},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
+    serializer = ReviewUpdateSerializer(
+        data=request.data,
+        partial=True,
+    )
+    serializer.is_valid(raise_exception=True)
+
+    review = services.update_review(
+        review=review,
+        rating=serializer.validated_data.get("rating"),
+        comment=serializer.validated_data.get("comment"),
+    )
+
+    return Response(ReviewSerializer(review).data)

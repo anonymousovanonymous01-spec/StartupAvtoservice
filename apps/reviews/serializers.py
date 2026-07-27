@@ -15,3 +15,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 class ReviewCreateSerializer(serializers.Serializer):
     rating = serializers.IntegerField(min_value=1, max_value=5)
     comment = serializers.CharField(required=False, allow_blank=True, default="")
+
+class ReviewUpdateSerializer(serializers.Serializer):
+    rating = serializers.IntegerField(min_value=1,max_value=5,required=False,)
+    comment = serializers.CharField(required=False,allow_blank=True,)

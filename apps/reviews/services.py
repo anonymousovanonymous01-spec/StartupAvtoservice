@@ -30,3 +30,21 @@ def delete_review(*, review: Review) -> None:
     location = review.location
     review.delete()
     _recalculate_location_rating(location)
+
+
+@transaction.atomic
+def update_review(*,review: Review,
+    rating: int | None = None,
+    comment: str | None = None,
+) -> Review:
+    if rating is not None:
+        review.rating = rating
+
+    if comment is not None:
+        review.comment = comment
+
+    review.save(update_fields=["rating", "comment", "updated_at"])
+
+    _recalculate_location_rating(review.location)
+
+    return review

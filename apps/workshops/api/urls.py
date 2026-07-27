@@ -19,8 +19,8 @@ urlpatterns = [
     path("<uuid:workshop_id>/locations/<uuid:location_id>/working-hours/", location_views.location_working_hours, name="location-working-hours"),
     path("<uuid:workshop_id>/locations/<uuid:location_id>/images/", location_views.location_add_image, name="location-add-image"),
     # Offerings (location services)
-    path("<uuid:workshop_id>/locations/<uuid:location_id>/offerings/", location_views.offering_list, name="offering-list"),
-    path("<uuid:workshop_id>/locations/<uuid:location_id>/offerings/create/", location_views.offering_create, name="offering-create"),
-    path("<uuid:workshop_id>/locations/<uuid:location_id>/offerings/<uuid:offering_id>/update/", location_views.offering_update, name="offering-update"),
-    path("<uuid:workshop_id>/locations/<uuid:location_id>/offerings/<uuid:offering_id>/delete/", location_views.offering_delete, name="offering-delete"),
+    # path("<uuid:workshop_id>/locations/<uuid:location_id>/offerings/", location_views.offering_list, name="offering-list"),
+    # path("<uuid:workshop_id>/locations/<uuid:location_id>/offerings/create/", location_views.offering_create, name="offering-create"),
+    # path("<uuid:workshop_id>/locations/<uuid:location_id>/offerings/<uuid:offering_id>/update/", location_views.offering_update, name="offering-update"),
+    # path("<uuid:workshop_id>/locations/<uuid:location_id>/offerings/<uuid:offering_id>/delete/", location_views.offering_delete, name="offering-delete"),
 ]

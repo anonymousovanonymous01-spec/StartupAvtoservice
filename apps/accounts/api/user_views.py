@@ -18,7 +18,7 @@ def me(request):
 @api_view(["PATCH"])
 @permission_classes([IsAuthenticated])
 def update_me(request):
-    serializer = ProfileUpdateSerializer(data=request.data, partial=True)
+    serializer = ProfileUpdateSerializer(instance=request.user , data=request.data, partial=True)
     serializer.is_valid(raise_exception=True)
     user = services.update_profile(request.user, serializer.validated_data)
     return Response(UserProfileSerializer(user).data)

@@ -18,3 +18,17 @@ def list_services(*, category_id=None, search: str = "") -> QuerySet[Service]:
             | Q(aliases__alias__icontains=search)
         ).distinct()
     return qs
+
+
+
+
+def list_services(category_id=None, search=""):
+    queryset = Service.objects.select_related("category").prefetch_related("aliases")
+
+    if category_id:
+        queryset = queryset.filter(category_id=category_id)
+
+    if search:
+        queryset = queryset.filter(name__icontains=search)
+
+    return queryset

@@ -122,9 +122,20 @@ class LocationWriteSerializer(serializers.ModelSerializer):
 
 
 # --- Workshop ----------------------------------------------------------------
+class WorkshopPhoneSerializer(serializers.ModelSerializer):
+    description = serializers.CharField(source="name", read_only=True)
+
+    class Meta:
+        model = WorkshopLocation
+        fields = [
+            "phone",
+            "description",
+        ]
+
+
 class WorkshopReadSerializer(serializers.ModelSerializer):
     locations_count = serializers.IntegerField(source="locations.count", read_only=True)
-
+    phones = WorkshopPhoneSerializer(source="locations", many=True, read_only=True)
     class Meta:
         model = Workshop
         fields = [
@@ -140,6 +151,7 @@ class WorkshopReadSerializer(serializers.ModelSerializer):
             "status",
             "is_verified",
             "premium",
+            "phones",
             "locations_count",
             "created_at",
             "updated_at",
@@ -166,3 +178,5 @@ class FavoriteSerializer(serializers.ModelSerializer):
         model = Favorite
         fields = ["location", "location_detail", "created_at"]
         read_only_fields = ["created_at"]
+
+
